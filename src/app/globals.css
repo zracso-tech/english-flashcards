@@ -1,26 +1,52 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #FBF9F4;
+  --color-foreground: #1F2128;
+  --color-muted: #6B6E7A;
+  --color-faint: #9AA0AD;
+  --color-line: #E8E5DD;
+  --color-line-strong: #D4D0C5;
+  --color-surface: #FFFFFF;
+  --color-accent: #185FA5;
+  --color-accent-soft: #E6F1FB;
+  --color-correct: #3B6D11;
+  --color-correct-soft: #EAF3DE;
+  --color-wrong: #A32D2D;
+  --color-wrong-soft: #FCEBEB;
+  --color-recall: #854F0B;
+  --color-recall-soft: #FAEEDA;
+  --font-sans: var(--font-inter);
+  --radius-card: 16px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { -webkit-tap-highlight-color: transparent; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-feature-settings: "cv11", "ss01";
 }
+
+/* Card flip */
+.flip-area { perspective: 1200px; }
+.flip-inner { position: relative; transform-style: preserve-3d; transition: transform .55s cubic-bezier(.4,.2,.2,1); }
+.flip-inner.is-flipped { transform: rotateY(180deg); }
+.flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-face--back { transform: rotateY(180deg); }
+
+/* Form input */
+.form-input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: inherit;
+  resize: vertical;
+}
+.form-input:focus { border-color: var(--color-foreground); }

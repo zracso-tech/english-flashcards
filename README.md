@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# English flashcards
 
-## Getting Started
+App de flashcards de inglés (vocabulario, pronunciación, conectores). Next.js + Supabase + Vercel.
 
-First, run the development server:
+- **Practicar** (`/`): tarjeta volteable, filtros por módulo, botones "Lo sabía / No lo sabía".
+- **Tracker** (`/tracker`): tabla con todas las tarjetas, su racha y estado.
+- **Mis tarjetas** (`/cards`): añadir, editar y borrar tarjetas. Crear módulos nuevos (W3, W4…) sobre la marcha.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Lógica de repaso: 3 aciertos seguidos = **Dominada**. A los **7 días** vuelve para confirmar. Si fallas, la racha se reinicia y la tarjeta vuelve al circuito activo.
+
+## Setup local
+
+### 1. Supabase
+
+1. Crear proyecto en [supabase.com](https://supabase.com). Anotar **Project URL** y **anon public key** (Settings → API).
+2. Abrir el **SQL editor** y pegar/ejecutar en orden:
+   - `supabase/migrations/0001_init.sql` (schema + RLS).
+   - `supabase/seed.sql` (75 tarjetas iniciales).
+3. **Auth → URL configuration**:
+   - Site URL: `http://localhost:3000` (mientras desarrollas).
+   - Redirect URLs (whitelist): añadir `http://localhost:3000/auth/confirm` y, cuando despliegues, `https://<tu-app>.vercel.app/auth/confirm`.
+4. **Auth → Providers → Email**:
+   - Activado.
+   - **Confirm email** → ON.
+   - (Opcional, recomendado tras tu primer login) **Auth → Settings → User signups** → OFF. Así nadie más puede crearse cuenta aunque conozca la URL.
+
+### 2. Variables de entorno
+
+Copiar `.env.local.example` a `.env.local` y rellenar la `anon key`:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://fswajxniyrwzwfjdvqjn.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Correr en local
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Abrir `http://localhost:3000` → te redirige a `/login`. Introducir tu email → llega el magic link → entras.
 
-## Learn More
+## Despliegue (Vercel)
 
-To learn more about Next.js, take a look at the following resources:
+1. Push del repo a GitHub (`zracso-tech/english-flashcards`).
+2. En [vercel.com](https://vercel.com) → **Add New → Project** → importa el repo.
+3. En **Environment Variables** añadir:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy. Apuntar la URL final (`https://english-flashcards-xxx.vercel.app`).
+5. Volver a Supabase → **Auth → URL configuration**:
+   - Site URL → cambiar a la URL de Vercel.
+   - Redirect URLs → añadir `https://<tu-app>.vercel.app/auth/confirm`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Next.js 16 (App Router, Server Actions)
+- React 19
+- Tailwind 4
+- Supabase (Postgres + Auth + RLS) — `@supabase/ssr`
+- TypeScript
 
-## Deploy on Vercel
+## Estructura
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── actions.ts          # Server actions (mark, signIn, CRUD)
+│   ├── auth/confirm/       # Magic link callback
+│   ├── cards/              # Mis tarjetas (CRUD)
+│   ├── login/              # Magic link form
+│   ├── tracker/            # Tabla de progreso
+│   └── page.tsx            # Practicar (home)
+├── components/             # Header, Practice, TrackerClient, CardsManager
+├── lib/
+│   ├── queue.ts            # Lógica del circuito de repaso
+│   ├── supabase/           # Clientes (browser / server / middleware)
+│   └── types.ts
+└── middleware.ts           # Protege rutas excepto /login y /auth
+```
