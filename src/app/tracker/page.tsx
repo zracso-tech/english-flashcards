@@ -8,12 +8,10 @@ export const dynamic = "force-dynamic";
 
 export default async function TrackerPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
 
   const [{ data: cards }, { data: progress }] = await Promise.all([
     supabase.from("cards").select("*").order("module").order("word"),
-    supabase.from("user_progress").select("*").eq("user_id", user.id),
+    supabase.from("card_progress").select("*"),
   ]);
 
   const progressMap = new Map((progress ?? []).map((p) => [p.card_id, p]));
@@ -29,7 +27,6 @@ export default async function TrackerPage() {
 
   const modules = Array.from(new Set(merged.map((c) => c.module)));
 
-  // Pre-compute status for each row (avoid sending Date logic to client beyond what queue.ts does)
   const rows = merged.map((c) => {
     const status = getStatus(c);
     return {

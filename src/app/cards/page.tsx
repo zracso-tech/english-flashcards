@@ -6,8 +6,6 @@ export const dynamic = "force-dynamic";
 
 export default async function CardsPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
 
   const { data: cards } = await supabase
     .from("cards")

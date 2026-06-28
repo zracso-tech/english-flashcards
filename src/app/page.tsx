@@ -7,19 +7,13 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return null;
 
   const [{ data: cards }, { data: progress }, { data: today }] = await Promise.all([
     supabase.from("cards").select("*").order("module").order("word"),
-    supabase.from("user_progress").select("*").eq("user_id", user.id),
+    supabase.from("card_progress").select("*"),
     supabase
-      .from("sessions")
+      .from("daily_sessions")
       .select("correct")
-      .eq("user_id", user.id)
       .eq("date", new Date().toISOString().slice(0, 10))
       .maybeSingle(),
   ]);

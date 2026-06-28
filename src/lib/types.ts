@@ -9,15 +9,13 @@ export type Card = {
 };
 
 export type Progress = {
-  user_id: string;
   card_id: string;
   streak: number;
   last_seen_at: string | null;
   mastered_at: string | null;
 };
 
-export type Session = {
-  user_id: string;
+export type DailySession = {
   date: string;
   correct: number;
   wrong: number;
