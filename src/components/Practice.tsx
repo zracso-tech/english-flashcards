@@ -210,15 +210,5 @@ function EmptyState({ mastered, total, correctToday }: { mastered: number; total
 }
 
 function shortLabel(m: string): string {
-  if (m === ALL) return "Todos";
-  return m
-    .replace("SEMANA 1", "S1")
-    .replace("SEMANA 2", "S2")
-    .replace("W1", "S1")
-    .replace("W2", "S2")
-    .replace("· ", "")
-    .replace("Mastering Sounds", "MS")
-    .replace("Sounding Native", "SN")
-    .replace("Connecting Words", "CW")
-    .replace("Beautifying", "BS");
+  return m === ALL ? "Todos" : m;
 }

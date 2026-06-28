@@ -194,7 +194,7 @@ function CardForm({
             required
             list="modules"
             defaultValue={card?.module ?? ""}
-            placeholder="p. ej. SEMANA 3 · Sounding Native"
+            placeholder="p. ej. SEMANA 3"
             className="form-input"
           />
           <datalist id="modules">
