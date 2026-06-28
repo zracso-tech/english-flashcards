@@ -65,8 +65,8 @@ export default function Practice({ cards, modules, correctToday }: Props) {
               className={
                 "px-3 py-1.5 rounded-full text-[12px] border transition " +
                 (active
-                  ? "bg-[--color-foreground] text-white border-[--color-foreground]"
-                  : "border-[--color-line-strong] text-[--color-muted] hover:text-[--color-foreground]")
+                  ? "bg-foreground text-white border-foreground"
+                  : "border-line-strong text-muted hover:text-foreground")
               }
             >
               {shortLabel(m)}
@@ -84,8 +84,8 @@ export default function Practice({ cards, modules, correctToday }: Props) {
               className={
                 "rounded-full " +
                 (i === 0
-                  ? "w-2.5 h-2.5 bg-[--color-accent]"
-                  : "w-1.5 h-1.5 bg-[--color-line-strong]")
+                  ? "w-2.5 h-2.5 bg-accent"
+                  : "w-1.5 h-1.5 bg-line-strong")
               }
             />
           ))}
@@ -105,7 +105,7 @@ export default function Practice({ cards, modules, correctToday }: Props) {
           {!flipped ? (
             <button
               onClick={() => setFlipped(true)}
-              className="w-full rounded-xl bg-[--color-surface] border border-[--color-line-strong] text-[14px] font-medium py-3 hover:bg-[--color-line]/30 transition"
+              className="w-full rounded-xl bg-surface border border-line-strong text-[14px] font-medium py-3 hover:bg-line/30 transition"
             >
               Ver significado
             </button>
@@ -114,21 +114,21 @@ export default function Practice({ cards, modules, correctToday }: Props) {
               <button
                 onClick={() => next(false)}
                 disabled={pending}
-                className="flex-1 rounded-xl border border-[--color-wrong] text-[--color-wrong] py-3 text-[14px] font-medium hover:bg-[--color-wrong-soft] disabled:opacity-50 transition"
+                className="flex-1 rounded-xl border border-wrong text-wrong py-3 text-[14px] font-medium hover:bg-wrong-soft disabled:opacity-50 transition"
               >
                 No lo sabía
               </button>
               <button
                 onClick={() => next(true)}
                 disabled={pending}
-                className="flex-1 rounded-xl border border-[--color-correct] text-[--color-correct] py-3 text-[14px] font-medium hover:bg-[--color-correct-soft] disabled:opacity-50 transition"
+                className="flex-1 rounded-xl border border-correct text-correct py-3 text-[14px] font-medium hover:bg-correct-soft disabled:opacity-50 transition"
               >
                 Lo sabía
               </button>
             </div>
           )}
 
-          <p className="text-center text-[12px] text-[--color-faint] mt-4">
+          <p className="text-center text-[12px] text-faint mt-4">
             Toca la tarjeta para girarla · {filteredStats.remaining} {filteredStats.remaining === 1 ? "tarjeta" : "tarjetas"} por repasar
           </p>
         </>
@@ -146,14 +146,14 @@ export default function Practice({ cards, modules, correctToday }: Props) {
 function Stat({ label, value, tone }: { label: string; value: number; tone?: "accent" | "correct" }) {
   const color =
     tone === "accent"
-      ? "text-[--color-accent]"
+      ? "text-accent"
       : tone === "correct"
-        ? "text-[--color-correct]"
-        : "text-[--color-foreground]";
+        ? "text-correct"
+        : "text-foreground";
   return (
-    <div className="rounded-xl bg-[--color-surface] border border-[--color-line] px-3 py-2.5 text-center">
+    <div className="rounded-xl bg-surface border border-line px-3 py-2.5 text-center">
       <div className={"text-[20px] font-medium leading-tight " + color}>{value}</div>
-      <div className="text-[11px] text-[--color-muted] mt-0.5">{label}</div>
+      <div className="text-[11px] text-muted mt-0.5">{label}</div>
     </div>
   );
 }
@@ -163,28 +163,28 @@ function CardFace({ card, side }: { card: CardWithProgress; side: "front" | "bac
   return (
     <div
       className={
-        "flip-face absolute inset-0 rounded-2xl border border-[--color-line] p-7 flex flex-col items-center justify-center text-center " +
-        (isBack ? "flip-face--back bg-[--color-surface]" : "bg-[--color-surface]")
+        "flip-face absolute inset-0 rounded-2xl border border-line p-7 flex flex-col items-center justify-center text-center " +
+        (isBack ? "flip-face--back bg-surface" : "bg-surface")
       }
       style={{ borderRadius: "var(--radius-card)" }}
     >
-      <div className="text-[10.5px] font-medium uppercase tracking-[0.08em] text-[--color-faint] mb-3">
+      <div className="text-[10.5px] font-medium uppercase tracking-[0.08em] text-faint mb-3">
         {card.module}
       </div>
       {!isBack ? (
         <>
-          <div className="text-[26px] sm:text-[30px] font-medium leading-tight text-[--color-foreground] max-w-md">
+          <div className="text-[26px] sm:text-[30px] font-medium leading-tight text-foreground max-w-md">
             {card.word}
           </div>
-          <div className="text-[12px] text-[--color-faint] mt-3">Toca para ver el significado</div>
+          <div className="text-[12px] text-faint mt-3">Toca para ver el significado</div>
         </>
       ) : (
         <>
-          <div className="text-[18px] sm:text-[20px] font-medium leading-snug text-[--color-foreground] max-w-md">
+          <div className="text-[18px] sm:text-[20px] font-medium leading-snug text-foreground max-w-md">
             {card.meaning}
           </div>
           {card.example && (
-            <div className="text-[13px] italic text-[--color-muted] leading-relaxed mt-3 max-w-md">
+            <div className="text-[13px] italic text-muted leading-relaxed mt-3 max-w-md">
               &ldquo;{card.example}&rdquo;
             </div>
           )}
@@ -196,9 +196,9 @@ function CardFace({ card, side }: { card: CardWithProgress; side: "front" | "bac
 
 function EmptyState({ mastered, total, correctToday }: { mastered: number; total: number; correctToday: number }) {
   return (
-    <div className="rounded-2xl border border-[--color-line] bg-[--color-surface] p-10 text-center">
+    <div className="rounded-2xl border border-line bg-surface p-10 text-center">
       <h2 className="text-[20px] font-medium tracking-tight">Sesión completada</h2>
-      <p className="text-[14px] text-[--color-muted] mt-1.5">
+      <p className="text-[14px] text-muted mt-1.5">
         {total === 0
           ? "No hay tarjetas en este módulo."
           : mastered === total
@@ -212,6 +212,10 @@ function EmptyState({ mastered, total, correctToday }: { mastered: number; total
 function shortLabel(m: string): string {
   if (m === ALL) return "Todos";
   return m
+    .replace("SEMANA 1", "S1")
+    .replace("SEMANA 2", "S2")
+    .replace("W1", "S1")
+    .replace("W2", "S2")
     .replace("· ", "")
     .replace("Mastering Sounds", "MS")
     .replace("Sounding Native", "SN")

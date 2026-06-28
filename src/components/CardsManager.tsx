@@ -52,13 +52,13 @@ export default function CardsManager({ cards, modules }: { cards: Card[]; module
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <h1 className="text-[20px] font-medium tracking-tight">Mis tarjetas</h1>
-          <p className="text-[13px] text-[--color-muted] mt-1">
-            {cards.length} tarjetas. Añade tantas como quieras y crea módulos nuevos (W3, W4…).
+          <p className="text-[13px] text-muted mt-1">
+            {cards.length} tarjetas. Añade tantas como quieras y crea módulos nuevos (SEMANA 3, 4…).
           </p>
         </div>
         <button
           onClick={() => { setCreating(true); setEditing(null); }}
-          className="rounded-xl bg-[--color-foreground] text-white text-[13px] font-medium px-4 py-2.5 hover:opacity-90 transition"
+          className="rounded-xl bg-foreground text-white text-[13px] font-medium px-4 py-2.5 hover:opacity-90 transition"
         >
           + Nueva tarjeta
         </button>
@@ -72,8 +72,8 @@ export default function CardsManager({ cards, modules }: { cards: Card[]; module
             className={
               "px-3 py-1.5 rounded-full text-[12px] border transition " +
               (activeModule === m
-                ? "bg-[--color-foreground] text-white border-[--color-foreground]"
-                : "border-[--color-line-strong] text-[--color-muted] hover:text-[--color-foreground]")
+                ? "bg-foreground text-white border-foreground"
+                : "border-line-strong text-muted hover:text-foreground")
             }
           >
             {m === ALL ? "Todos" : m}
@@ -86,28 +86,28 @@ export default function CardsManager({ cards, modules }: { cards: Card[]; module
         placeholder="Buscar…"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="mt-3 w-full rounded-xl border border-[--color-line-strong] bg-[--color-surface] px-4 py-2.5 text-[14px] outline-none focus:border-[--color-foreground] transition"
+        className="mt-3 w-full rounded-xl border border-line-strong bg-surface px-4 py-2.5 text-[14px] outline-none focus:border-foreground transition"
       />
 
-      <div className="mt-4 rounded-2xl border border-[--color-line] bg-[--color-surface] divide-y divide-[--color-line]">
+      <div className="mt-4 rounded-2xl border border-line bg-surface divide-y divide-line">
         {filtered.map((c) => (
           <div key={c.id} className="px-4 py-3 flex items-start gap-3">
             <div className="flex-1 min-w-0">
               <div className="text-[14.5px] font-medium">{c.word}</div>
-              <div className="text-[12.5px] text-[--color-muted] mt-0.5 truncate">{c.meaning}</div>
-              <div className="text-[10.5px] uppercase tracking-[0.06em] text-[--color-faint] mt-1">{c.module}</div>
+              <div className="text-[12.5px] text-muted mt-0.5 truncate">{c.meaning}</div>
+              <div className="text-[10.5px] uppercase tracking-[0.06em] text-faint mt-1">{c.module}</div>
             </div>
             <div className="flex gap-1 shrink-0">
               <button
                 onClick={() => { setEditing(c); setCreating(false); }}
-                className="text-[12px] text-[--color-muted] hover:text-[--color-foreground] px-2 py-1 transition"
+                className="text-[12px] text-muted hover:text-foreground px-2 py-1 transition"
               >
                 Editar
               </button>
               <button
                 onClick={() => handleDelete(c.id)}
                 disabled={pending}
-                className="text-[12px] text-[--color-wrong] hover:underline px-2 py-1 transition disabled:opacity-50"
+                className="text-[12px] text-wrong hover:underline px-2 py-1 transition disabled:opacity-50"
               >
                 Borrar
               </button>
@@ -115,7 +115,7 @@ export default function CardsManager({ cards, modules }: { cards: Card[]; module
           </div>
         ))}
         {filtered.length === 0 && (
-          <div className="px-4 py-10 text-center text-[--color-muted] text-[13px]">
+          <div className="px-4 py-10 text-center text-muted text-[13px]">
             Sin resultados.
           </div>
         )}
@@ -153,7 +153,7 @@ function CardForm({
       <form
         onClick={(e) => e.stopPropagation()}
         onSubmit={(e) => { e.preventDefault(); onSubmit(new FormData(e.currentTarget)); }}
-        className="w-full max-w-md bg-[--color-surface] rounded-2xl border border-[--color-line] p-5 max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-md bg-surface rounded-2xl border border-line p-5 max-h-[90vh] overflow-y-auto"
       >
         <h2 className="text-[16px] font-medium">{card ? "Editar tarjeta" : "Nueva tarjeta"}</h2>
 
@@ -194,31 +194,31 @@ function CardForm({
             required
             list="modules"
             defaultValue={card?.module ?? ""}
-            placeholder="p. ej. W3 · Sounding Native"
+            placeholder="p. ej. SEMANA 3 · Sounding Native"
             className="form-input"
           />
           <datalist id="modules">
             {modules.map((m) => <option key={m} value={m} />)}
           </datalist>
-          <p className="text-[11px] text-[--color-faint] mt-1">
-            Escribe uno nuevo para crear un módulo (W3, W4…) o elige uno existente.
+          <p className="text-[11px] text-faint mt-1">
+            Escribe uno nuevo para crear un módulo (SEMANA 3, 4…) o elige uno existente.
           </p>
         </Field>
 
-        {error && <p className="text-[12px] text-[--color-wrong] mt-2">{error}</p>}
+        {error && <p className="text-[12px] text-wrong mt-2">{error}</p>}
 
         <div className="mt-5 flex gap-2">
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 rounded-xl border border-[--color-line-strong] text-[13px] py-2.5 hover:bg-[--color-background] transition"
+            className="flex-1 rounded-xl border border-line-strong text-[13px] py-2.5 hover:bg-background transition"
           >
             Cancelar
           </button>
           <button
             type="submit"
             disabled={pending}
-            className="flex-1 rounded-xl bg-[--color-foreground] text-white text-[13px] font-medium py-2.5 hover:opacity-90 disabled:opacity-50 transition"
+            className="flex-1 rounded-xl bg-foreground text-white text-[13px] font-medium py-2.5 hover:opacity-90 disabled:opacity-50 transition"
           >
             {pending ? "Guardando…" : "Guardar"}
           </button>
@@ -232,7 +232,7 @@ function CardForm({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block mt-3">
-      <span className="block text-[12px] text-[--color-muted] mb-1">{label}</span>
+      <span className="block text-[12px] text-muted mb-1">{label}</span>
       {children}
     </label>
   );

@@ -43,7 +43,7 @@ export default function TrackerClient({ rows, modules }: { rows: Row[]; modules:
   return (
     <div className="max-w-2xl mx-auto px-5 py-7 w-full">
       <h1 className="text-[20px] font-medium tracking-tight">Tracker</h1>
-      <p className="text-[13px] text-[--color-muted] mt-1">
+      <p className="text-[13px] text-muted mt-1">
         Progreso por tarjeta. Tres aciertos seguidos = dominada. A los 7 días vuelve para confirmar.
       </p>
 
@@ -66,10 +66,10 @@ export default function TrackerClient({ rows, modules }: { rows: Row[]; modules:
         ))}
       </div>
 
-      <div className="mt-5 rounded-2xl border border-[--color-line] bg-[--color-surface] overflow-hidden">
+      <div className="mt-5 rounded-2xl border border-line bg-surface overflow-hidden">
         <table className="w-full text-[13px]">
           <thead>
-            <tr className="text-left text-[--color-muted] border-b border-[--color-line]">
+            <tr className="text-left text-muted border-b border-line">
               <th className="font-medium px-4 py-2.5">Palabra</th>
               <th className="font-medium px-4 py-2.5">Módulo</th>
               <th className="font-medium px-4 py-2.5 text-center">Racha</th>
@@ -79,10 +79,10 @@ export default function TrackerClient({ rows, modules }: { rows: Row[]; modules:
           </thead>
           <tbody>
             {filtered.map((r) => (
-              <tr key={r.id} className="border-b border-[--color-line] last:border-0 hover:bg-[--color-background]/50">
+              <tr key={r.id} className="border-b border-line last:border-0 hover:bg-background/50">
                 <td className="px-4 py-2.5 font-medium">{r.word}</td>
-                <td className="px-4 py-2.5 text-[--color-muted]">{r.module}</td>
-                <td className="px-4 py-2.5 text-center text-[--color-muted] tracking-[0.2em] text-[12px]">
+                <td className="px-4 py-2.5 text-muted">{r.module}</td>
+                <td className="px-4 py-2.5 text-center text-muted tracking-[0.2em] text-[12px]">
                   {pips(r.streak)}
                 </td>
                 <td className="px-4 py-2.5">
@@ -96,7 +96,7 @@ export default function TrackerClient({ rows, modules }: { rows: Row[]; modules:
                       onClick={() => reset(r.id)}
                       disabled={pending}
                       title="Reiniciar progreso de esta tarjeta"
-                      className="text-[11px] text-[--color-faint] hover:text-[--color-foreground] transition"
+                      className="text-[11px] text-faint hover:text-foreground transition"
                     >
                       Reset
                     </button>
@@ -106,7 +106,7 @@ export default function TrackerClient({ rows, modules }: { rows: Row[]; modules:
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-[--color-muted]">
+                <td colSpan={5} className="px-4 py-8 text-center text-muted">
                   No hay tarjetas con esos filtros.
                 </td>
               </tr>
@@ -125,8 +125,8 @@ function FilterChip({ active, onClick, children }: { active: boolean; onClick: (
       className={
         "px-3 py-1.5 rounded-full text-[12px] border transition " +
         (active
-          ? "bg-[--color-foreground] text-white border-[--color-foreground]"
-          : "border-[--color-line-strong] text-[--color-muted] hover:text-[--color-foreground]")
+          ? "bg-foreground text-white border-foreground"
+          : "border-line-strong text-muted hover:text-foreground")
       }
     >
       {children}
